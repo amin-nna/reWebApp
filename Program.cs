@@ -27,6 +27,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     // Default SignIn settings.
     options.SignIn.RequireConfirmedEmail = true;
     options.SignIn.RequireConfirmedPhoneNumber = true;
+    options.User.RequireUniqueEmail = true;
 });
 
 

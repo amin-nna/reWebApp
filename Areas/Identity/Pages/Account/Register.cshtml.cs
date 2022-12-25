@@ -93,6 +93,10 @@ namespace realEstateWebApp.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
+            //Custom
+            [Required]
+            public string PhoneNumber { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -131,6 +135,8 @@ namespace realEstateWebApp.Areas.Identity.Pages.Account
                 //We configure first name and last name
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
+                //We configure phone country code and phone number
+                user.PhoneNumber = Input.PhoneNumber;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
