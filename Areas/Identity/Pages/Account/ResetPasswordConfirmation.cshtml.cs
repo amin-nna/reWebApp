@@ -4,6 +4,7 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using realEstateWebApp.Areas.Identity.Data;
 
 namespace realEstateWebApp.Areas.Identity.Pages.Account
 {

@@ -15,9 +15,9 @@
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.LastName" class="form-control" autocomplete="firstname" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.LastName">First Name</label>
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                <input asp-for="Input.FirstName" class="form-control" autocomplete="firstname" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="Input.FirstName">First Name</label>
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
                 <input asp-for="Input.LastName" class="form-control" autocomplete="lastname" aria-required="true" placeholder="name@example.com" />
@@ -25,25 +25,22 @@
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <input asp-for="Input.Email" class="form-control" autocomplete="email" aria-required="true" placeholder="name@example.com" />
                 <label asp-for="Input.Email">Email</label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input id="phone" name="phone" class="form-control" type="tel" aria-required="true">
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                <input asp-for="Input.PhoneNumber" class="form-control" id="phone" autocomplete="phonenumber" aria-required="true" />
+     
                 <script>const phoneInputField = document.querySelector("#phone");
                     const phoneInput = window.intlTelInput(phoneInputField, {
                         utilsScript:
                             "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
                     });</script>
-
-                <span id="valid-msg" class="hide"></span>
-                <span id="error-msg" class="hide"></span>
-
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
                 <label asp-for="Input.Password">Password</label>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
