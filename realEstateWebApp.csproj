@@ -22,6 +22,7 @@
     <None Remove="Views\Dahsboard\" />
     <None Remove="Views\Sell\" />
     <None Remove="Views\Inbox\" />
+    <None Remove="Services\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.1" />
@@ -42,5 +43,6 @@
     <Folder Include="Views\Dashboard\" />
     <Folder Include="Views\Sell\" />
     <Folder Include="Views\Inbox\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 </Project>

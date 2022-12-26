@@ -8,16 +8,20 @@ using Microsoft.EntityFrameworkCore;
 using realEstateWebApp.Areas.Identity.Data;
 using realEstateWebApp.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
+using realEstateWebApp.Services;
 
 namespace realEstateWebApp.Controllers
 {
     public class BienController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private ApplicationDbContext _context;
+        private IUserService _userService;
 
-        public BienController(ApplicationDbContext context)
+        public BienController(ApplicationDbContext context, IUserService userService)
         {
             _context = context;
+            _userService = userService;
         }
 
         // GET: BienModel
@@ -41,8 +45,6 @@ namespace realEstateWebApp.Controllers
             }
             return View(biens);
         }
-
-        
 
         // GET: BienModel
         // Affiche les résultats de la recherche
@@ -98,12 +100,14 @@ namespace realEstateWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TypeDeBien,ImageDeBien,TypeDeTransaction,Description,Superficie,Adresse,Prix")] BienModel BienModel)
         {
+
+            string connectedUser = _userService.getUserId();
+            BienModel.IdUser= new Guid (connectedUser);
             if (ModelState.IsValid)
             {
-                BienModel.IdUser = User.Identity.GetUserId();
                 _context.Add(BienModel);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View();
             }
             return View(BienModel);
         }

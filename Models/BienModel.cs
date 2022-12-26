@@ -7,7 +7,8 @@ namespace realEstateWebApp.Models
     {
         //Id du bien 
         public int Id { get; set; }
-        public string IdUser { get; set; }
+        public Guid IdUser  { get; set; }
+        
         public string TypeDeBien { get; set; }
         public string ImageDeBien { get; set; }
         public string TypeDeTransaction { get; set; }
