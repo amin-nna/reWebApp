@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace realEstateWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class identityTables : Migration
+    public partial class migration1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -53,19 +53,37 @@ namespace realEstateWebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "users",
+                name: "Biens",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Mobile = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TypeDeBien = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageDeBien = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TypeDeTransaction = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Superficie = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Adresse = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Prix = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_users", x => x.Id);
+                    table.PrimaryKey("PK_Biens", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ImagesBiens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdBien = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    typeImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Superficie = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImagesBiens", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -233,7 +251,10 @@ namespace realEstateWebApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "users");
+                name: "Biens");
+
+            migrationBuilder.DropTable(
+                name: "ImagesBiens");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

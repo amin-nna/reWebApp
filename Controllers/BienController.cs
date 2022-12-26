@@ -7,42 +7,82 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using realEstateWebApp.Areas.Identity.Data;
 using realEstateWebApp.Models;
+using Microsoft.AspNet.Identity;
 
 namespace realEstateWebApp.Controllers
 {
-    public class UserController : Controller
+    public class BienController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public UserController(ApplicationDbContext context)
+        public BienController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: UserEntity
+        // GET: BienModel
         public async Task<IActionResult> Index()
         {
-              return _context.users != null ? 
-                          View(await _context.users.ToListAsync()) :
+              return _context.Biens != null ? 
+                          View(await _context.Biens.ToListAsync()):
                           Problem("Entity set 'ApplicationDbContext.user'  is null.");
         }
+
+        // GET: BienModel
+        // Affiche les résultats de la recherche
+        // Cherche le mot clé dans la description
+        public async Task<IActionResult> IndexSearch(string search)
+        {
+            ViewData["CurrentFilter"] = search;
+            var biens = from b in _context.Biens select b;
+            if ( !String.IsNullOrEmpty(search))
+            {
+                biens = biens.Where(b => b.Description.Contains(search));
+            }
+            return View(biens);
+        }
+
+        
+
+        // GET: BienModel
+        // Affiche les résultats de la recherche
+        //Filtre selon le type de bien terrain/maison/appartement
+        public async Task<IActionResult> IndexType(string search )
+        {
+
+
+            return _context.Biens != null ?
+                        View(await _context.Biens.Where( b => b.TypeDeBien.Equals(search)).ToListAsync()):
+                        Problem("Entity set 'ApplicationDbContext.Bien'  is null.");
+        }
+
+        // GET: BienModel
+        // Affiche les résultats de la recherche
+        //Filtre selon le type de transaction vente/location
+        public async Task<IActionResult> IndexTransaction(string search)
+        {
+            return _context.Biens != null ?
+                        View(await _context.Biens.Where(b => b.TypeDeTransaction.Equals(search)).ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.Bien'  is null.");
+        }
+
 
         // GET: User/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.users == null)
+            if (id == null || _context.Biens == null)
             {
                 return NotFound();
             }
 
-            var userEntity = await _context.users
+            var BienModel = await _context.Biens
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (userEntity == null)
+            if (BienModel == null)
             {
                 return NotFound();
             }
 
-            return View(userEntity);
+            return View(BienModel);
         }
 
         // GET: User/Create
@@ -56,31 +96,32 @@ namespace realEstateWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Mobile,Email")] userEntity userEntity)
+        public async Task<IActionResult> Create([Bind("TypeDeBien,ImageDeBien,TypeDeTransaction,Description,Superficie,Adresse,Prix")] BienModel BienModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(userEntity);
+                BienModel.IdUser = User.Identity.GetUserId();
+                _context.Add(BienModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(userEntity);
+            return View(BienModel);
         }
 
         // GET: User/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.users == null)
+            if (id == null || _context.Biens == null)
             {
                 return NotFound();
             }
 
-            var userEntity = await _context.users.FindAsync(id);
-            if (userEntity == null)
+            var BienModel = await _context.Biens.FindAsync(id);
+            if (BienModel == null)
             {
                 return NotFound();
             }
-            return View(userEntity);
+            return View(BienModel);
         }
 
         // POST: User/Edit/5
@@ -88,9 +129,9 @@ namespace realEstateWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Mobile,Email")] userEntity userEntity)
+        public async Task<IActionResult> Edit(int id, [Bind("TypeDeBien,ImageDeBien,TypeDeTransaction,Description,Superficie,Adresse,Prix")] BienModel BienModel)
         {
-            if (id != userEntity.Id)
+            if (id != BienModel.Id)
             {
                 return NotFound();
             }
@@ -99,12 +140,12 @@ namespace realEstateWebApp.Controllers
             {
                 try
                 {
-                    _context.Update(userEntity);
+                    _context.Update(BienModel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!userEntityExists(userEntity.Id))
+                    if (!BienModelExists(BienModel.Id))
                     {
                         return NotFound();
                     }
@@ -115,25 +156,25 @@ namespace realEstateWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(userEntity);
+            return View(BienModel);
         }
 
         // GET: User/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.users == null)
+            if (id == null || _context.Biens == null)
             {
                 return NotFound();
             }
 
-            var userEntity = await _context.users
+            var BienModel = await _context.Biens
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (userEntity == null)
+            if (BienModel == null)
             {
                 return NotFound();
             }
 
-            return View(userEntity);
+            return View(BienModel);
         }
 
         // POST: User/Delete/5
@@ -141,23 +182,23 @@ namespace realEstateWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.users == null)
+            if (_context.Biens == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.user'  is null.");
             }
-            var userEntity = await _context.users.FindAsync(id);
-            if (userEntity != null)
+            var BienModel = await _context.Biens.FindAsync(id);
+            if (BienModel != null)
             {
-                _context.users.Remove(userEntity);
+                _context.Biens.Remove(BienModel);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool userEntityExists(int id)
+        private bool BienModelExists(int id)
         {
-          return (_context.users?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Biens?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

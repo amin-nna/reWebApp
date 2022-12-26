@@ -23,8 +23,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
     }
 
-    //We will define a data set
-    public DbSet<userEntity> users { get; set; }
+    //We will define a data sets
+    public DbSet<BienModel> Biens { get; set; }
+    public DbSet<ImageBienModel> ImagesBiens { get; set; }
+
 }
 
 public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<ApplicationUser>

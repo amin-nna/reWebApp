@@ -1,0 +1,42 @@
+@model IEnumerable<realEstateWebApp.Models.BienModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<form asp-action="Index" method="get">
+    <div class="form-group">
+        <label for="search"> Filter </label>
+        <select class="form-control" name="search">
+            <option>Choisissez le type de bien</option>
+            <option>Terrain</option>
+            <option>Maison</option>
+            <option>Appartement</option>
+        </select>
+        <input type="submit" value="Filtrer" class="btn-primary" />
+    </div>
+</form>
+
+<table class="table">
+    
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageDeBien)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TypeDeBien)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TypeDeTransaction)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+              
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

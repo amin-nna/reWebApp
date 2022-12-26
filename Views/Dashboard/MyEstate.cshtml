@@ -1,0 +1,30 @@
+﻿@model IEnumerable<realEstateWebApp.Models.BienModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<table class="table">
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImageDeBien)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TypeDeBien)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TypeDeTransaction)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

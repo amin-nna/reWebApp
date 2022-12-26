@@ -19,6 +19,9 @@
     <None Remove="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
     <None Remove="Areas\Identity\Data\" />
     <None Remove="Twilio.AspNet.Core" />
+    <None Remove="Views\Dahsboard\" />
+    <None Remove="Views\Sell\" />
+    <None Remove="Views\Inbox\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.1" />
@@ -36,5 +39,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Identity\Data\" />
+    <Folder Include="Views\Dashboard\" />
+    <Folder Include="Views\Sell\" />
+    <Folder Include="Views\Inbox\" />
   </ItemGroup>
 </Project>
