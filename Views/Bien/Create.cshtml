@@ -6,12 +6,15 @@
 
 <h1>Create</h1>
 
-<h4>userEntity</h4>
+<h4>Sell an estate</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        
+        <form asp-action="Create" enctype="multipart/form-data">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
                 <label asp-for="TypeDeBien" class="control-label"></label>
                 <select asp-for="TypeDeBien" class="form-control">
@@ -22,16 +25,23 @@
                 </select>
                 <span asp-validation-for="TypeDeBien" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="ImageDeBien" class="control-label"></label>
                 <input asp-for="ImageDeBien" class="form-control" />
                 <span asp-validation-for="ImageDeBien" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="TypeDeTransaction" class="control-label"></label>
-                <input asp-for="TypeDeTransaction" class="form-control" />
+                <select asp-for="TypeDeTransaction" class="form-control">
+                    <option>Choisissez le type de transaction</option>
+                    <option>À louer</option>
+                    <option>À vendre</option>
+                </select>
                 <span asp-validation-for="TypeDeTransaction" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" />

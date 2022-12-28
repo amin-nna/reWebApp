@@ -45,5 +45,11 @@
     <Folder Include="Views\Sell\" />
     <Folder Include="Views\Inbox\" />
     <Folder Include="Services\" />
+    <Folder Include="wwwroot\ImagesBiens\" />
+    <Folder Include="wwwroot\ImagesBiens\covers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\ImagesBiens\" />
+    <Content Remove="wwwroot\ImagesBiens\covers\" />
   </ItemGroup>
 </Project>

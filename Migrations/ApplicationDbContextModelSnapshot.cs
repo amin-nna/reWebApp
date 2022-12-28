@@ -253,10 +253,6 @@ namespace realEstateWebApp.Migrations
                     b.Property<Guid>("IdUser")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ImageDeBien")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Prix")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

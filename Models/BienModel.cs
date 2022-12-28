@@ -1,5 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace realEstateWebApp.Models
 {
@@ -10,7 +14,14 @@ namespace realEstateWebApp.Models
         public Guid IdUser  { get; set; }
         
         public string TypeDeBien { get; set; }
-        public string ImageDeBien { get; set; }
+
+        [NotMapped]
+        [DataType(DataType.Upload)]
+        [Display(Name = "Upload File")]
+        [Required(ErrorMessage = "Please choose file to upload.")]
+        public IFormFile ImageDeBien { get; set; }
+
+        public string ImageDeBienUrl { get; set; }
         public string TypeDeTransaction { get; set; }
         public string Description { get; set; }
         public string Superficie { get; set; }
@@ -19,10 +30,7 @@ namespace realEstateWebApp.Models
         
         //Les images du biens seront dans une autre table ImagesBien
 
-        public BienModel()
-        {
-
-        }
+        
     }
 }
 

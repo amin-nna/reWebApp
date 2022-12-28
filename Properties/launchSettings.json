@@ -34,7 +34,7 @@
     "realEstateWebApp": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:26247;http://localhost:20769",
+      "applicationUrl": "https://localhost:32739;http://localhost:49080",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -12,8 +12,8 @@ using realEstateWebApp.Areas.Identity.Data;
 namespace realEstateWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221226074316_tableUsreGuidForBien")]
-    partial class tableUsreGuidForBien
+    [Migration("20221228093812_001")]
+    partial class _001
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -255,10 +255,6 @@ namespace realEstateWebApp.Migrations
 
                     b.Property<Guid>("IdUser")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ImageDeBien")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Prix")
                         .IsRequired()

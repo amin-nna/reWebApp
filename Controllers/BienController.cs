@@ -10,6 +10,8 @@ using realEstateWebApp.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Identity;
 using realEstateWebApp.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 
 namespace realEstateWebApp.Controllers
 {
@@ -17,11 +19,13 @@ namespace realEstateWebApp.Controllers
     {
         private ApplicationDbContext _context;
         private IUserService _userService;
+        private IWebHostEnvironment _webHostEnvironment;
 
-        public BienController(ApplicationDbContext context, IUserService userService)
+        public BienController(ApplicationDbContext context, IUserService userService, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _userService = userService;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: BienModel
@@ -103,11 +107,24 @@ namespace realEstateWebApp.Controllers
 
             string connectedUser = _userService.getUserId();
             BienModel.IdUser= new Guid (connectedUser);
+
             if (ModelState.IsValid)
             {
-                _context.Add(BienModel);
-                await _context.SaveChangesAsync();
-                return View();
+                if (BienModel.ImageDeBien != null)
+                {
+                    string folder = "ImagesBiens/covers/";
+                    folder += Guid.NewGuid().ToString() +"_"+ BienModel.ImageDeBien.FileName;
+                    //We have the actual folder path en considerant le serveur
+                    string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder);
+                    BienModel.ImageDeBien.CopyTo(new FileStream ( serverFolder, FileMode.Create));
+                    BienModel.ImageDeBienUrl = folder;
+
+                    _context.Add(BienModel);
+                    await _context.SaveChangesAsync();
+                    return View();
+
+                }
+                
             }
             return View(BienModel);
         }

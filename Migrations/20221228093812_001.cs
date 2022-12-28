@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace realEstateWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class tableUsreGuidForBien : Migration
+    public partial class _001 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -60,7 +60,6 @@ namespace realEstateWebApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IdUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TypeDeBien = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImageDeBien = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TypeDeTransaction = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Superficie = table.Column<string>(type: "nvarchar(max)", nullable: false),
