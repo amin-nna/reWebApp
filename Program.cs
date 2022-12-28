@@ -4,12 +4,17 @@ using Microsoft.AspNetCore.Identity;
 using realEstateWebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+var config = new ConfigurationBuilder()
+                    .AddJsonFile($"appsettings.json", true, true)
+                    .AddUserSecrets<Program>().Build();
+
+var dbServer = config["ConnectionStrings:reWebAppCnn"];
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 //Inject the connection string when the application is loaded
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("reWebAppCnn")));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(dbServer));
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -18,7 +23,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 {
     // Default SignIn settings.
     options.SignIn.RequireConfirmedEmail = true;
-    options.SignIn.RequireConfirmedPhoneNumber = true;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
     options.User.RequireUniqueEmail = true;
 });
 

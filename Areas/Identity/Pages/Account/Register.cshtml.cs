@@ -19,7 +19,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using realEstateWebApp.Areas.Identity.Data;
+using realEstateWebApp.Services;
 using System.Diagnostics;
+using Twilio.TwiML.Messaging;
 
 namespace realEstateWebApp.Areas.Identity.Pages.Account
 {
@@ -160,8 +162,10 @@ namespace realEstateWebApp.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //$"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    string errormessage = string.Empty;
+                    var success = EmailSender.SendEmail($"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.", user.Email, user.FirstName, out errormessage);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
