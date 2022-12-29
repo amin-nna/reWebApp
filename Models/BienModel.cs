@@ -20,22 +20,32 @@ namespace realEstateWebApp.Models
 
         [NotMapped]
         [DataType(DataType.Upload)]
-        [Display(Name = "Upload File")]
-        [Required(ErrorMessage = "Please choose file to upload.")]
+        [Display(Name = "Upload a cover image")]
+        [Required(ErrorMessage = "Please choose a cover image for your property")]
         public IFormFile ImageDeBien { get; set; }
 
-        [AllowNull]
-        public string ImageDeBienUrl { get; set; }
+        [NotMapped]
+        [DataType(DataType.Upload)]
+        [Display(Name = "Upload other images for your property")]
+        [Required(ErrorMessage = "Please choose other images for your property")]
+        public ICollection<IFormFile> ImagesDeBien { get; set; }
+
+        //Can be null
+        public string? ImageDeBienUrl { get; set; }
+
+        //Can be null
+        public List<ImageModel>? ImagesDeBienUrl { get; set; }
 
         public string TypeDeTransaction { get; set; }
         public string Description { get; set; }
         public string Superficie { get; set; }
         public string Adresse { get; set; }
         public string Prix { get; set; }
-        
-        //Les images du biens seront dans une autre table ImagesBien
 
         
+        
+
+
     }
 }
 

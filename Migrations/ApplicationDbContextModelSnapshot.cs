@@ -253,6 +253,9 @@ namespace realEstateWebApp.Migrations
                     b.Property<Guid>("IdUser")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ImageDeBienUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Prix")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -274,7 +277,7 @@ namespace realEstateWebApp.Migrations
                     b.ToTable("Biens");
                 });
 
-            modelBuilder.Entity("realEstateWebApp.Models.ImageBienModel", b =>
+            modelBuilder.Entity("realEstateWebApp.Models.ImageModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -282,21 +285,22 @@ namespace realEstateWebApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("IdBien")
+                    b.Property<int?>("BienModelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Superficie")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("typeImage")
+                    b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ImagesBiens");
+                    b.HasIndex("BienModelId");
+
+                    b.ToTable("ImageModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -348,6 +352,18 @@ namespace realEstateWebApp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("realEstateWebApp.Models.ImageModel", b =>
+                {
+                    b.HasOne("realEstateWebApp.Models.BienModel", null)
+                        .WithMany("ImagesDeBienUrl")
+                        .HasForeignKey("BienModelId");
+                });
+
+            modelBuilder.Entity("realEstateWebApp.Models.BienModel", b =>
+                {
+                    b.Navigation("ImagesDeBienUrl");
                 });
 #pragma warning restore 612, 618
         }

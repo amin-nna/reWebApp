@@ -13,6 +13,7 @@ using realEstateWebApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using static NuGet.Packaging.PackagingConstants;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace realEstateWebApp.Controllers
 {
@@ -21,6 +22,7 @@ namespace realEstateWebApp.Controllers
         private ApplicationDbContext _context;
         private IUserService _userService;
         private IWebHostEnvironment _webHostEnvironment;
+        
 
         public BienController(ApplicationDbContext context, IUserService userService, IWebHostEnvironment webHostEnvironment)
         {
@@ -103,33 +105,55 @@ namespace realEstateWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind(include:"TypeDeBien,ImageDeBien,TypeDeTransaction,Description,Superficie,Adresse,Prix")] BienModel BienModel)
+        public async Task<IActionResult> Create([Bind(include: "TypeDeBien,ImageDeBien,ImagesDeBien,TypeDeTransaction,Description,Superficie,Adresse,Prix")] BienModel BienModel)
         {
             string folder = "ImagesBiens/covers/";
             string connectedUser = _userService.getUserId();
             BienModel.IdUser= new Guid (connectedUser);
             ModelState.Remove("ImageDeBienUrl");
+            ModelState.Remove("ImagesDeBienUrl");
             BienModel.ImageDeBienUrl = folder+ "No-Image-Placeholder.png";
             
             if (ModelState.IsValid)
             {
                 if (BienModel.ImageDeBien != null)
                 {
-                    
-                    folder += Guid.NewGuid().ToString() +"_"+ BienModel.ImageDeBien.FileName;
-                    //We have the actual folder path en considerant le serveur
-                    string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder);
-                    BienModel.ImageDeBien.CopyTo(new FileStream ( serverFolder, FileMode.Create));
+                    folder = await UploadImage(BienModel.ImageDeBien, folder);
                     BienModel.ImageDeBienUrl = folder;
 
-                    _context.Add(BienModel);
-                    await _context.SaveChangesAsync();
-                    return View();
-
                 }
-                
+
+                if (BienModel.ImagesDeBien != null)
+                {
+                    BienModel.ImagesDeBienUrl = new List<ImageModel>();
+                    foreach (var file in BienModel.ImagesDeBien)
+                    {
+                        var path = new ImageModel() {
+                            Name = file.FileName,
+                            Url = await UploadImage(file, "ImagesBiens/gallery/")};
+
+                        BienModel.ImagesDeBienUrl.Add(path);
+
+                    }
+                }
+                _context.Add(BienModel);
+                await _context.SaveChangesAsync();
+
+                return View();
+
             }
+            
             return View(BienModel);
+        }
+
+        private async Task<string> UploadImage(IFormFile ImageDeBien, string folder)
+        {
+            folder += Guid.NewGuid().ToString() + "_" + ImageDeBien.FileName;
+            //We have the actual folder path en considerant le serveur
+            string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder);
+            await ImageDeBien.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+            return folder;
+            
         }
 
         // GET: User/Edit/5

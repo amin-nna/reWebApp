@@ -25,7 +25,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
     //We will define a data sets
     public DbSet<BienModel> Biens { get; set; }
-    public DbSet<ImageBienModel> ImagesBiens { get; set; }
+    //public DbSet<ImageModel> ImagesBiens { get; set; }
 
 }
 

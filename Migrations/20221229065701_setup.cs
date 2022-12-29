@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace realEstateWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class _001 : Migration
+    public partial class setup : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -60,6 +60,7 @@ namespace realEstateWebApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IdUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TypeDeBien = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageDeBienUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TypeDeTransaction = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Superficie = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -69,21 +70,6 @@ namespace realEstateWebApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Biens", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ImagesBiens",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IdBien = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    typeImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Superficie = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ImagesBiens", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -192,6 +178,26 @@ namespace realEstateWebApp.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ImageModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BienModelId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImageModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ImageModel_Biens_BienModelId",
+                        column: x => x.BienModelId,
+                        principalTable: "Biens",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -230,6 +236,11 @@ namespace realEstateWebApp.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ImageModel_BienModelId",
+                table: "ImageModel",
+                column: "BienModelId");
         }
 
         /// <inheritdoc />
@@ -251,16 +262,16 @@ namespace realEstateWebApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Biens");
-
-            migrationBuilder.DropTable(
-                name: "ImagesBiens");
+                name: "ImageModel");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Biens");
         }
     }
 }
