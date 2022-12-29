@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Newtonsoft.Json;
+using System.Diagnostics.CodeAnalysis;
 
 namespace realEstateWebApp.Models
 {
@@ -21,7 +24,9 @@ namespace realEstateWebApp.Models
         [Required(ErrorMessage = "Please choose file to upload.")]
         public IFormFile ImageDeBien { get; set; }
 
+        [AllowNull]
         public string ImageDeBienUrl { get; set; }
+
         public string TypeDeTransaction { get; set; }
         public string Description { get; set; }
         public string Superficie { get; set; }

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using realEstateWebApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace realEstateWebApp.Controllers
 {
@@ -102,17 +103,19 @@ namespace realEstateWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TypeDeBien,ImageDeBien,TypeDeTransaction,Description,Superficie,Adresse,Prix")] BienModel BienModel)
+        public async Task<IActionResult> Create([Bind(include:"TypeDeBien,ImageDeBien,TypeDeTransaction,Description,Superficie,Adresse,Prix")] BienModel BienModel)
         {
-
+            string folder = "ImagesBiens/covers/";
             string connectedUser = _userService.getUserId();
             BienModel.IdUser= new Guid (connectedUser);
-
+            ModelState.Remove("ImageDeBienUrl");
+            BienModel.ImageDeBienUrl = folder+ "No-Image-Placeholder.png";
+            
             if (ModelState.IsValid)
             {
                 if (BienModel.ImageDeBien != null)
                 {
-                    string folder = "ImagesBiens/covers/";
+                    
                     folder += Guid.NewGuid().ToString() +"_"+ BienModel.ImageDeBien.FileName;
                     //We have the actual folder path en considerant le serveur
                     string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder);
