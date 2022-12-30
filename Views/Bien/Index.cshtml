@@ -29,7 +29,9 @@
                         <h3 class="card-Bien">@Html.DisplayFor(modelItem => item.TypeDeBien)</h3>
                         <h3 class="card-Transaction">@Html.DisplayFor(modelItem => item.TypeDeTransaction)</h3>
                         <h3 class="card-Prix">@Html.DisplayFor(modelItem => item.Prix)</h3>
-                        <h6 asp-action="Details" asp-route-id="@item.Id">Détails</h6> |
+                        <div class="btn-group">
+                            <a asp-action="Details" asp-route-id="@item.Id">Détails</a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -31,10 +31,10 @@ namespace realEstateWebApp.Models
         public ICollection<IFormFile> ImagesDeBien { get; set; }
 
         //Can be null
-        public string? ImageDeBienUrl { get; set; }
+        public string ImageDeBienUrl { get; set; }
 
         //Can be null
-        public List<ImageModel>? ImagesDeBienUrl { get; set; }
+        public List<ImageModel> ImagesDeBienUrl { get; set; }
 
         public string TypeDeTransaction { get; set; }
         public string Description { get; set; }

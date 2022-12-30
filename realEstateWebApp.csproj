@@ -24,6 +24,7 @@
     <None Remove="Views\Sell\" />
     <None Remove="Views\Inbox\" />
     <None Remove="Services\" />
+    <None Remove="bootstrap" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.1" />
@@ -38,6 +39,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.1" />
     <PackageReference Include="Twilio.AspNet.Core" Version="7.0.0" />
+    <PackageReference Include="bootstrap" Version="5.2.3" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Identity\Data\" />

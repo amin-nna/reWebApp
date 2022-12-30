@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using static NuGet.Packaging.PackagingConstants;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.IO;
 
 namespace realEstateWebApp.Controllers
 {
@@ -84,15 +85,32 @@ namespace realEstateWebApp.Controllers
                 return NotFound();
             }
 
-            var BienModel = await _context.Biens
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (BienModel == null)
-            {
-                return NotFound();
-            }
+            var BienModel = await _context.Biens.Where(x => x.Id == id)
+                 .Select(bien => new BienModel()
+                 {
+                     Id = bien.Id,
+                     IdUser = bien.IdUser,
+                     TypeDeBien = bien.TypeDeBien,
+                     ImageDeBien = bien.ImageDeBien,
+                     ImagesDeBien = bien.ImagesDeBien,
+                     ImageDeBienUrl = bien.ImageDeBienUrl,
+                     ImagesDeBienUrl = bien.ImagesDeBienUrl.Select(g => new ImageModel()
+                     {
+                         Id = g.Id,
+                         Name = g.Name,
+                         Url = g.Url
+                     }).ToList(),
+                     TypeDeTransaction = bien.TypeDeTransaction,
+                     Description = bien.Description,
+                     Superficie = bien.Superficie,
+                     Adresse = bien.Adresse,
+                     Prix = bien.Prix,
+
+                 }).FirstOrDefaultAsync();
 
             return View(BienModel);
         }
+
 
         // GET: User/Create
         public IActionResult Create()
@@ -129,6 +147,7 @@ namespace realEstateWebApp.Controllers
                     foreach (var file in BienModel.ImagesDeBien)
                     {
                         var path = new ImageModel() {
+                            Id = BienModel.Id,
                             Name = file.FileName,
                             Url = await UploadImage(file, "ImagesBiens/gallery/")};
 
@@ -136,6 +155,19 @@ namespace realEstateWebApp.Controllers
 
                     }
                 }
+                else
+                {
+                    BienModel.ImagesDeBienUrl = new List<ImageModel>();
+                    var path = new ImageModel()
+                    {
+                        Name = "No-Image-Placeholder.png",
+                        Url = "ImagesBiens/gallery/No-Image-Placeholder.png"
+                    };
+                    BienModel.ImagesDeBienUrl.Add(path);
+                };
+                
+            
+
                 _context.Add(BienModel);
                 await _context.SaveChangesAsync();
 

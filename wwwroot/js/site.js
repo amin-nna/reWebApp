@@ -2,4 +2,9 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+$(".option").click(function () {
+    $(".option").removeClass("active");
+    $(this).addClass("active");
+
+});
 
